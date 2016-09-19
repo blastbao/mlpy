@@ -26,7 +26,7 @@ grad = gradientreg(initial_theta, X, y, lamb)
 print("Cost at initial theta (zeros): ", cost.item(0))
 
 initial_theta = numpy.zeros(n)
-lamb = 1
+lamb = 0.1
 theta, _, _ = op.fmin_tnc(func=costfunctionreg, x0=initial_theta, args=(X, y, lamb), fprime=gradientreg)
 plotdecisionboundary(theta, X[:, 1:], y)
 plt.title("lambda = {:.2f}".format(lamb))
