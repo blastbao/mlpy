@@ -9,9 +9,10 @@ def plotdecisionboundary(theta, X, y):
     X = numpy.matrix(X)
     y = numpy.matrix(y)
 
-    plotdata(X, y)
+    plotdata(X[:, :2], y)
+    print(X.shape[1])
 
-    if X.shape[1] <= 3:
+    if X.shape[1] <= 2:
         x_min, x_max = X[:, 0].min(), X[:, 0].max()
         y_min = -(theta[0, 0] + theta[0, 1]*x_min) / theta[0, 2]
         y_max = -(theta[0, 0] + theta[0, 1]*x_max) / theta[0, 2]
@@ -20,9 +21,14 @@ def plotdecisionboundary(theta, X, y):
     else:
         u = numpy.linspace(-1, 1.5, 50)
         v = numpy.linspace(-1, 1.5, 50)
+        print(len(u))
+        print(len(v))
         z = numpy.zeros((len(u), len(v)))
         for i in range(len(u)):
             for j in range(len(v)):
-                z[i][j] = numpy.dot(mapfeature(u[i], v[j]), theta)
+                print(u[i].shape)
+                print(v[j].shape)
+                z[i][j] = numpy.dot(mapfeature(u[i].T, v[j].T), theta.T)
 
-        plt.contour(u, v, z, [0, 0], linewidth=2)
+        z = z.T
+        plt.contour(u, v, z, levels=[0], linewidth=2).collections[0]

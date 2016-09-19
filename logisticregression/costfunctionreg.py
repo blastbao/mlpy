@@ -1,17 +1,19 @@
 import numpy
-from costfunction import costfunction as costfn, gradient as gradfn
+from costfunction import costfunction, gradient
 
 
-def costfunction(theta, X, y, lamb):
-    cost = costfn(theta, X, y)
+def costfunctionreg(theta, X, y, lamb):
+    m, n = X.shape
+    cost = costfunction(theta, X, y)
     reg = lamb * numpy.sum(numpy.power(theta[1:], 2)) / (2 * m)
 
     return cost + reg
 
 
-def gradient(theta, X, y, lamb):
+def gradientreg(theta, X, y, lamb):
     m, n = X.shape
-    grad = gradfn(theta, X, y)
-    reg = lamb * numpy.r_[numpy.zeros((1, n)), theta[1:, :]] / m
+    grad = gradient(theta, X, y)
+    theta = numpy.matrix(theta)
+    reg = lamb * numpy.r_[numpy.zeros((1, len(theta))), theta.T[1:, :]] / m
 
-    return grad + reg
+    return grad + reg.flatten()

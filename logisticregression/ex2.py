@@ -23,12 +23,11 @@ initial_theta = numpy.zeros(n+1)
 
 cost = costfunction(initial_theta, X, y)
 grad = gradient(initial_theta, X, y)
-print("Cost:", cost)
+print("Cost:", cost.item(0))
 print("Gradient at initial theta (zeros):\n", grad)
 
-print("initial_theta:", initial_theta.shape)
-theta, _ = op.fmin_tnc(func=costfunction, x0=initial_theta, args=(X, y), fprime=gradient)
-print("Cost:", costfunction(theta, X, y))
+theta, _, _ = op.fmin_tnc(func=costfunction, x0=initial_theta, args=(X, y), fprime=gradient)
+print("Cost:", costfunction(theta, X, y).item(0))
 print("Theta:\n", theta)
 
 nums = numpy.arange(-10, 10, 1)
