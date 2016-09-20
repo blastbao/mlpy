@@ -5,6 +5,7 @@ from mapfeature import mapfeature
 from costfunctionreg import costfunctionreg, gradientreg
 import scipy.optimize as op
 from plotdecisionboundary import plotdecisionboundary
+from predict import predict
 
 
 data = numpy.loadtxt("ex2data2.txt", delimiter=',')
@@ -34,3 +35,6 @@ plt.xlabel("Microchip Test 1")
 plt.ylabel("Microchip Test 2")
 plt.legend(["y = 1", "y = 0", "Decision boundary"])
 plt.show()
+
+p = predict(theta, X)
+print("Train accuracy: {:.1f}%".format(numpy.mean(p == y) * 100))
