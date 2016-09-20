@@ -1,0 +1,16 @@
+
+The new version 3.04 of Mobirise Website Builder is out. Zero coding, drag-and-drop site creation. Fully responsive, Bootstrap based.
+
+What's new in v3.04:
+* "WOW Slider" extension. The famous image slider with 100+ transitions and skins, is now available as a Mobirise extension.
+* Minor GUI changes
+* Paddings for article blocks
+* Changes in menu and footer apply for all pages automatically
+* Fixes for Google Maps
+* Bug fixes
+
+Recent reviews:
+* The long read: "Deep look into the brand new Mobirise 3", Part 2, Part 3 - General overview, tips and tricks, expanding the functionality, code snippets, etc..
+Special Offer:
+Normally, the WOW Slider stand-alone app sells for $99, but as a Mobirise extension, it is only $29.
+Even better - till Aug 20, you can get this extension for just $19!
