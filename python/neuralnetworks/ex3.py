@@ -2,6 +2,7 @@ import numpy
 import scipy.io
 from onevsall import one_vs_all
 from predictonevsall import predict_one_vs_all
+from displayData import displayData
 
 mat = scipy.io.loadmat("ex3data1.mat")
 X = mat["X"]
@@ -10,7 +11,7 @@ m, _ = X.shape
 
 # rand_indices = numpy.random.permutation(range(m))
 # sel = X[rand_indices[0:100], :]
-#
+
 # displayData(sel)
 
 lamb = 0.1
