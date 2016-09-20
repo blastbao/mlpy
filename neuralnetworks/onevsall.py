@@ -9,7 +9,6 @@ def one_vs_all(X, y, num_labels, lamb):
     all_theta = numpy.zeros((num_labels, n+1))
 
     for i in range(num_labels):
-        theta, _, _ = op.fmin_tnc(func=lr_cost_function, x0=all_theta[i, :], args=(X, (y == i+1), lamb), fprime=lr_gradient)
-        all_theta[i, :] = theta
+        all_theta[i, :], _, _ = op.fmin_tnc(func=lr_cost_function, x0=all_theta[i, :], args=(X, (y == i+1), lamb), fprime=lr_gradient)
 
     return all_theta

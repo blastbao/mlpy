@@ -16,6 +16,6 @@ print("Training set accuracy: {:.1f}%".format(numpy.mean(pred == numpy.squeeze(y
 
 rp = numpy.random.permutation(range(m))
 
-for i in range(m):
+for i in range(min(10, m)):
     pred = predict(Theta1, Theta2, X[rp[i], :]).item(0)
     print("Neural network prediction: {:d} (digit {:d})".format(pred, pred % 10))

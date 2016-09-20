@@ -13,4 +13,4 @@ def predict(Theta1, Theta2, X):
     A1 = numpy.c_[numpy.ones((len(A1), 1)), A1]
     A2 = sigmoid(numpy.dot(A1, Theta2.T))
 
-    return numpy.argmax(A2, axis=1) + 1
+    return numpy.squeeze(numpy.argmax(A2, axis=1) + 1)
