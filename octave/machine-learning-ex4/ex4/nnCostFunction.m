@@ -112,9 +112,6 @@ Theta2_grad = Theta2_grad + [zeros(size(reg2, 1), 1) reg2];
 % =========================================================================
 
 % Unroll gradients
-fprintf("\ntheta1/theta2\n")
-size(Theta1_grad)
-size(Theta2_grad)
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
 
