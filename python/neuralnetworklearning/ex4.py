@@ -2,6 +2,8 @@ import numpy
 import scipy.io
 from nncostfunction import nn_cost_function, nn_gradient
 from sigmoidgradient import sigmoid_gradient
+from randinitializeweights import rand_initialize_weights
+from checknngradients import check_nn_gradients
 
 
 input_layer_size = 400   # 20x20 Input Images of Digits
@@ -27,3 +29,11 @@ print("Cost at parameters (loaded from ex4weights.mat):", cost)
 
 g = sigmoid_gradient(numpy.array([1, -0.5, 0, 0.5, 1]))
 print(g)
+
+initial_theta1 = rand_initialize_weights(input_layer_size, hidden_layer_size)
+initial_theta2 = rand_initialize_weights(hidden_layer_size, num_labels)
+initial_nn_params = numpy.concatenate((initial_theta1.reshape(initial_theta1.size, order="F"),
+                                       initial_theta2.reshape(initial_theta2.size, order="F")))
+print(initial_nn_params)
+
+check_nn_gradients(0)

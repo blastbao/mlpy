@@ -32,6 +32,8 @@ costFunc = @(p) nnCostFunction(p, input_layer_size, hidden_layer_size, ...
                                num_labels, X, y, lambda);
 
 [cost, grad] = costFunc(nn_params);
+fprintf("\ngrad\n")
+size(grad)
 numgrad = computeNumericalGradient(costFunc, nn_params);
 
 % Visually examine the two gradient computations.  The two columns
