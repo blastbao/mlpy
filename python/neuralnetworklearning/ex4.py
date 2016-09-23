@@ -1,6 +1,6 @@
 import numpy
 import scipy.io
-from nncostfunction import nn_cost_function, nn_gradient
+from nncostfunction import nn_cost_function
 from sigmoidgradient import sigmoid_gradient
 from randinitializeweights import rand_initialize_weights
 from checknngradients import check_nn_gradients
@@ -24,7 +24,7 @@ cost = nn_cost_function(nn_params, input_layer_size, hidden_layer_size, num_labe
 print("Cost at parameters (loaded from ex4weights.mat):", cost)
 
 lamb = 1
-cost = nn_cost_function(nn_params, input_layer_size, hidden_layer_size, num_labels, X, y, lamb)
+cost, grad = nn_cost_function(nn_params, input_layer_size, hidden_layer_size, num_labels, X, y, lamb)
 print("Cost at parameters (loaded from ex4weights.mat):", cost)
 
 g = sigmoid_gradient(numpy.array([1, -0.5, 0, 0.5, 1]))
