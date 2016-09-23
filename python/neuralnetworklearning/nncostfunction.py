@@ -35,12 +35,17 @@ def nn_gradient(nn_params, input_layer_size, hidden_layer_size, num_labels, X, y
     a2 = numpy.c_[numpy.ones((len(a2), 1)), a2]
     a3 = sigmoid(numpy.dot(a2, Theta2.T))
     delta3 = a3 - yvec
-    delta2 = numpy.multiply(numpy.dot(delta3, Theta2), numpy.multiply(a2, 1-a2))
-    theta1_grad = numpy.dot(X.T, delta2)
-    theta2_grad = numpy.dot(a2.T, delta3)
+    delta2 = numpy.multiply(numpy.dot(delta3, Theta2[:, 1:]), numpy.multiply(a2[:, 1:], 1-a2[:, 1:]))
+    theta1_grad = numpy.dot(delta2, X)
+    theta2_grad = numpy.dot(delta3.T, a2)
 
-    print(theta1_grad.shape)
-    print(theta2_grad.shape)
+    print(numpy.sum(numpy.sum(theta1_grad)))
+    print(numpy.sum(numpy.sum(theta2_grad)))
+
+    reg1 = lamb * Theta1[:, 1:] / m
+    reg2 = lamb * Theta2[:, 1:] / m
+    theta1_grad += numpy.c_[numpy.zeros((len(reg1), 1)), reg1]
+    theta2_grad += numpy.c_[numpy.zeros((len(reg2), 1)), reg2]
 
     return numpy.concatenate((theta1_grad.reshape(theta1_grad.size, order="F"),
                               theta2_grad.reshape(theta2_grad.size, order="F")))

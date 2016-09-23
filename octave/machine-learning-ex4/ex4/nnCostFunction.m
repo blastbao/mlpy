@@ -103,6 +103,11 @@ end
 Theta1_grad = Theta1_grad / m;
 Theta2_grad = Theta2_grad / m;
 
+fprintf("\ntheta1")
+sum(sum(Theta1_grad))
+fprintf("\ntheta2")
+sum(sum(Theta2_grad))
+
 reg1 = lambda / m * Theta1(:, 2:end);
 Theta1_grad = Theta1_grad + [zeros(size(reg1, 1), 1) reg1];
 
@@ -112,9 +117,6 @@ Theta2_grad = Theta2_grad + [zeros(size(reg2, 1), 1) reg2];
 % =========================================================================
 
 % Unroll gradients
-fprintf("\ntheta1/theta2\n")
-size(Theta1_grad)
-size(Theta2_grad)
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
 
 

@@ -7,6 +7,7 @@ def compute_numerical_gradient(cost, theta):
     e = 1e-4
 
     for p in range(theta.size):
+        print(p)
         perturb.reshape(perturb.size, order="F")[p] = e
         loss1 = cost(theta - perturb)
         loss2 = cost(theta + perturb)

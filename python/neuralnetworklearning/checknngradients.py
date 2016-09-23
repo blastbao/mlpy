@@ -16,14 +16,11 @@ def check_nn_gradients(lamb):
     X = debug_initialize_weights(m, input_layer_size - 1)
     y = 1 + numpy.mod(range(m), num_labels).T
     nn_params = numpy.concatenate((theta1.reshape(theta1.size, order="F"), theta2.reshape(theta2.size, order="F")))
-    cost = nn_cost_function(nn_params, input_layer_size, hidden_layer_size, num_labels, X, y, lamb)
     grad = nn_gradient(nn_params, input_layer_size, hidden_layer_size, num_labels, X, y, lamb)
 
     def costFunc(p):
         return nn_cost_function(p, input_layer_size, hidden_layer_size, num_labels, X, y, lamb)
 
     numgrad = compute_numerical_gradient(costFunc, nn_params)
-    print(numgrad.shape)
-    print(grad.shape)
     diff = numpy.linalg.norm(numgrad-grad) / numpy.linalg.norm(numgrad+grad)
     print("Relatvie difference (should be less than 1e-9):", diff)
