@@ -2,7 +2,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
-from urllib import urlretrieve
 import pickle
 import os
 import gzip
@@ -22,12 +21,7 @@ from sklearn.metrics import confusion_matrix
 
 
 def load_dataset():
-    # url = "http://deeplearning.net/data/mnist/mnist.pkl.gz"
     filename = "mnist.pkl.gz"
-    # if not os.path.exists(filename):
-    #     print("Downloading MNIST dataset...")
-    #     urlretrieve(url, filename)
-
     with gzip.open(filename, "rb") as f:
         data = pickle.load(f)
 

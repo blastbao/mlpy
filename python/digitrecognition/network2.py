@@ -121,6 +121,9 @@ class Network(object):
             results = [(np.argmax(self.feed_forward(x)), y) for x, y in data]
         return sum(int(x == y) for x, y in results)
 
+    def predict(self, x):
+        return np.argmax(self.feed_forward(x))
+
     def total_cost(self, data, lmbda, convert=False):
         cost = 0.0
         for x, y in data:
