@@ -17,7 +17,7 @@ def plot(pixels):
 
 training_data, validation_data, test_data = mnist_loader.load_data_wrapper()
 arr, label = test_data[-1]
-net = network.Network([784, 1000, 10])
+net = network.Network([784, 100, 10])
 net.default_weight_initializer()
 net.stochastic_gradient_descent(training_data, 30, 10, 0.5, evaluation_data=test_data, monitor_evaluation_accuracy=True)
 print net.predict(arr)
