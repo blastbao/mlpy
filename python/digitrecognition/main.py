@@ -1,7 +1,7 @@
 import mnist_loader
 import numpy as np
 import matplotlib.pyplot as plt
-import network2 as network
+import neuralnetwork as network
 
 
 def plot(pixels):
