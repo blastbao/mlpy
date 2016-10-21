@@ -10,7 +10,7 @@ def sigmoid(z):
 
 def sigmoid_prime(z):
     sig = sigmoid(z)
-    return sig * (1-sig)
+    return np.multiply(sig, 1-sig)
 
 
 def relu(z):
@@ -34,7 +34,7 @@ class QuadraticCost(object):
 class CrossEntropyCost(object):
     @staticmethod
     def fn(a, y):
-        return np.sum(np.nan_to_num(-y * np.log(a) - (1-y) * np.log(1-a)))
+        return np.sum(np.nan_to_num(-np.multiply(y, np.log(a)) - np.multiply(1-y, np.log(1-a))))
 
     @staticmethod
     def delta(z, a, y):
@@ -45,8 +45,8 @@ class Network(object):
     def __init__(self, sizes, model=sigmoid, model_prime=sigmoid_prime, cost=CrossEntropyCost):
         self.num_layers = len(sizes)
         self.sizes = sizes
-        self.biases = [np.random.randn(y, 1) for y in self.sizes[1:]]
-        self.weights = [np.random.randn(y, x)/np.sqrt(x) for x, y in zip(self.sizes[:-1], self.sizes[1:])]
+        self.biases = [np.random.randn(1, y) for y in self.sizes[1:]]
+        self.weights = [np.random.randn(x, y)/np.sqrt(x) for x, y in zip(self.sizes[:-1], self.sizes[1:])]
         self.model = model
         self.model_prime = model_prime
         self.cost = cost
@@ -70,7 +70,9 @@ class Network(object):
         training_cost, training_accuracy = [], []
         for j in range(epochs):
             random.shuffle(training_data)
+            print(training_data[0])
             mini_batches = [training_data[k:k+mini_batch_size] for k in range(0, m, mini_batch_size)]
+            print(mini_batches[0])
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta, lmbda, len(training_data))
 
@@ -99,6 +101,7 @@ class Network(object):
     def update_mini_batch(self, mini_batch, eta, lmbda, m):
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
+        print(mini_batch[0])
         for x, y in mini_batch:
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
@@ -113,14 +116,25 @@ class Network(object):
         activations = [x]
         zs = []
         for b, w in zip(self.biases, self.weights):
-            z = b + np.dot(w, activation)
+            t = np.dot(activation, w)
+            print("a:", activation.shape)
+            print("w:", w.shape)
+            print("t:", t.shape)
+            print("b:", b.shape)
+            z = b + t
             zs.append(z)
             activation = self.model(z)
             activations.append(activation)
         delta = self.cost.delta(zs[-1], activations[-1], y)
+        print("d:", delta.shape)
+        print("aa:", activations[-2].shape)
         nabla_b[-1] = delta
-        nabla_w[-1] = np.dot(delta, activations[-2].T)
+        nabla_w[-1] = np.dot(activations[-2].T, delta)
         for l in range(2, self.num_layers):
+            print("1:", self.weights[-l+1].shape)
+            print("2:", delta.shape)
+            print("4:", self.model_prime(zs[-l]).shape)
+            print("3:", np.dot(self.weights[-l+1].T, delta).shape)
             delta = np.dot(self.weights[-l+1].T, delta) * self.model_prime(zs[-l])
             nabla_b[-l] = delta
             nabla_w[-l] = np.dot(delta, activations[-l-1].T)
@@ -171,5 +185,3 @@ def vectorized_result(j):
     e = np.zeros((10, 1))
     e[j] = 1.0
     return e
-
-
