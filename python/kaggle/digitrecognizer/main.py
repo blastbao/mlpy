@@ -1,6 +1,6 @@
 import csv
 import numpy as np
-import neuralnetwork as network
+from tensorflow.contrib.learn import DNNClassifier, infer_real_valued_columns_from_input
 
 
 def formalize(y, num_labels):
@@ -9,7 +9,7 @@ def formalize(y, num_labels):
     for i in range(m):
         yvec[i, int(y.item(i))-1] = 1
 
-    return yvec
+    return yvec.astype(np.int32)
 
 
 def to_int(arr):
@@ -18,42 +18,43 @@ def to_int(arr):
     ret = np.zeros((m, n))
     for i in range(m):
         for j in range(n):
-            ret[i, j] = int(mat[i, j])
-    return ret
+            ret[i, j] = mat[i, j]
+    return ret.astype(np.int32)
 
 
 def load_train_data():
     l = []
-    with open("t.csv") as f:
+    with open("train.csv") as f:
         lines = csv.reader(f)
         for line in lines:
             l.append(line)
     l.remove(l[0])
-    l = np.matrix(l)
-    labels = l[:, 0]
+    l = np.array(l)
+    labels = l[:, :1]
     data = l[:, 1:]
     return to_int(data), formalize(to_int(labels), 10)
 
 
 def load_test_data():
     l = []
-    with open("tt.csv") as f:
+    with open("test.csv") as f:
         lines = csv.reader(f)
         for line in lines:
             l.append(line)
     l.remove(l[0])
-    return to_int(np.matrix(l))
+    return to_int(l)
 
 
 train_images, train_labels = load_train_data()
-# train_images, validation_images = train_images[:, :3000], train_images[:, 3000:]
-train_images, validation_images = np.matrix(train_images[0, :]), np.matrix(train_images[1, :])
-# train_labels, validation_labels = train_labels[:, :3000], train_labels[:, 3000:]
-train_labels, validation_labels = np.matrix(train_labels[0, :]), np.matrix(train_labels[1, :])
 test_images = load_test_data()
+print(train_images[0])
 
-net = network.Network([784, 100, 10])
-net.stochastic_gradient_descent(zip(train_images, train_labels), 30, 1, 0.5,
-                                evaluation_data=zip(validation_images, validation_labels),
-                                monitor_evaluation_accuracy=True)
-print(net.predict(test_images))
+feature_columns = infer_real_valued_columns_from_input(train_images)
+clf = DNNClassifier([100], feature_columns, n_classes=10)
+print(train_images.shape)
+print(train_labels.shape)
+clf.fit(train_images, train_labels)
+print("done training")
+
+pred = clf.predict(test_images[0])
+print(pred)
