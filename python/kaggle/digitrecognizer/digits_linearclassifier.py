@@ -20,16 +20,16 @@ tf.logging.set_verbosity(tf.logging.INFO)
 def define_and_run_dnn_classifier(images, labels):
     """Run a DNN classifier."""
     feature_columns = tf.contrib.learn.infer_real_valued_columns_from_input(images)
-    classifier = tf.contrib.learn.DNNClassifier(
+    classifier = tf.contrib.learn.LinearClassifier(
         feature_columns=feature_columns, n_classes=10,
-        hidden_units=[1000],
         # After you've done a training run with optimizer learning rate 0.1,
         # change it to 0.5 and run the training again.  Use TensorBoard to take
         # a look at the difference.  You can see both runs by pointing it to
         # the parent model directory, which by default is:
         #   tensorboard --logdir=/tmp/tfmodels/mnist_tflearn
-        optimizer=tf.train.ProximalAdagradOptimizer(
-            learning_rate=0.01
+        optimizer=tf.train.FtrlOptimizer(
+            learning_rate=0.01,
+            l1_regularization_strength=0.001
         ),
         model_dir=ARGFLAGS.model_dir,
         enable_centered_bias=False
@@ -42,7 +42,7 @@ def define_and_run_dnn_classifier(images, labels):
 def eval_dnn_classifier(classifier, images, labels):
     # Evaluate classifier accuracy.
     accuracy_score = classifier.evaluate(images, labels.astype(np.int64))['accuracy']
-    print('DNN Classifier Accuracy: {0:f}'.format(accuracy_score))
+    print('LinearClassifier Accuracy: {0:f}'.format(accuracy_score))
 
 
 def to_int(arr):
