@@ -8,6 +8,8 @@ import time
 import csv
 import numpy as np
 import tensorflow as tf
+import functions
+
 
 ARGFLAGS = None
 DATA_SETS = None
@@ -15,15 +17,6 @@ SPLIT_INDEX = 35000
 
 # comment out for less info during the training runs.
 tf.logging.set_verbosity(tf.logging.INFO)
-
-
-def formalize(y, num_labels):
-    m = len(y)
-    yvec = np.zeros((m, num_labels))
-    for i in range(m):
-        yvec[i, int(y.item(i))-1] = 1
-
-    return yvec.astype(np.int32)
 
 
 def to_int(arr):
@@ -46,7 +39,7 @@ def load_train_data():
     l = np.array(l)
     labels = l[:, :1]
     data = l[:, 1:]
-    return to_int(data), formalize(to_int(labels), 10)
+    return to_int(data), functions.dense_to_one_hot(to_int(labels), 10)
 
 
 def load_test_data():
@@ -81,19 +74,15 @@ def main(_):
 
     session = tf.InteractiveSession()
     tf.initialize_all_variables().run()
-    for _ in range(1000):
-        iarr = np.arange(len(train_images))
-        np.random.shuffle(iarr)
-        iarr = iarr[:100]
-        images, labels = train_images[iarr], train_labels[iarr]
+    for _ in range(25000):
+        images, labels = functions.next_batch(train_images, train_labels, 100)
         session.run(train_step, feed_dict={x: images, y: labels})
     correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_pred, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     print(session.run(accuracy, feed_dict={x: validation_images, y: validation_labels}))
 
     test_images = load_test_data()
-    result = tf.argmax(y_pred, 1)
-    session.run(result, feed_dict={x: test_images})
+    result = session.run(tf.argmax(y_pred, 1), feed_dict={x: test_images})
     save_result(result)
     print("Done")
 
