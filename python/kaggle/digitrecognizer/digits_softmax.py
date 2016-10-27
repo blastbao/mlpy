@@ -71,20 +71,21 @@ def main(_):
     y_pred = tf.matmul(x, W) + b
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(y_pred, y))
     train_step = tf.train.GradientDescentOptimizer(0.5).minimize(cross_entropy)
+    model = tf.initialize_all_variables()
 
-    session = tf.InteractiveSession()
-    tf.initialize_all_variables().run()
-    for _ in range(25000):
-        images, labels = functions.next_batch(train_images, train_labels, 100)
-        session.run(train_step, feed_dict={x: images, y: labels})
-    correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_pred, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-    print(session.run(accuracy, feed_dict={x: validation_images, y: validation_labels}))
+    with tf.Session() as session:
+        session.run(model)
+        for _ in range(1000):
+            images, labels = functions.next_batch(train_images, train_labels, 100)
+            session.run(train_step, feed_dict={x: images, y: labels})
+        correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_pred, 1))
+        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        print(session.run(accuracy, feed_dict={x: validation_images, y: validation_labels}))
 
-    test_images = load_test_data()
-    result = session.run(tf.argmax(y_pred, 1), feed_dict={x: test_images})
-    save_result(result)
-    print("Done")
+        test_images = load_test_data()
+        result = session.run(tf.argmax(y_pred, 1), feed_dict={x: test_images})
+        save_result(result)
+        print("Done")
 
 
 if __name__ == '__main__':
