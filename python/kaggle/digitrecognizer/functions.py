@@ -1,4 +1,10 @@
 import numpy as np
+import tensorflow as tf
+
+
+def bias_variable(shape):
+    initial = tf.constant(0.1, shape=shape)
+    return tf.Variable(initial)
 
 
 def dense_to_one_hot(labels_dense, num_classes):
@@ -15,3 +21,8 @@ def next_batch(x, y, batch_size):
     np.random.shuffle(iarr)
     iarr = iarr[:batch_size]
     return x[iarr], y[iarr]
+
+
+def weight_variable(shape):
+    initial = tf.truncated_normal(shape, stddev=0.1)
+    return tf.Variable(initial)
