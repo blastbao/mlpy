@@ -14,8 +14,8 @@ import functions
 ARGFLAGS = None
 DATA_SETS = None
 SPLIT_INDEX = 35000
-BATCH_SIZE = 1000
-MAX_STEPS = 20000
+BATCH_SIZE = 100
+MAX_STEPS = 2000
 
 # comment out for less info during the training runs.
 tf.logging.set_verbosity(tf.logging.INFO)
@@ -39,6 +39,7 @@ def load_train_data():
             l.append(line)
     l.remove(l[0])
     l = np.array(l)
+    np.random.shuffle(l)
     labels = l[:, :1]
     data = l[:, 1:]
     return to_int(data), functions.dense_to_one_hot(to_int(labels), 10)
