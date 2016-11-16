@@ -20,6 +20,7 @@ def ReLU(z):
 
 
 GPU = False
+
 if GPU:
     print "Trying to run under a GPU. If this is not desired, then modify network3.py to set the GPU flag to False"
     try:
